@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Collysio — Hall du Colisée</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Lilita+One&family=Nunito:wght@700;800;900&display=swap" rel="stylesheet" />
+  <script type="module" crossorigin src="/assets/index-DrMonZLQ.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/index-H_nxf46r.css">
+</head>
+<body>
+  <canvas id="scene"></canvas>
+  <div id="labels"></div>
+
+  <div class="hud hud-left">
+    <button class="chip" id="profile" type="button" aria-label="Personnaliser ton avatar">
+      <span class="chip-dot" id="profile-dot"></span>
+      <span>
+        <strong id="profile-name">Gladiateur</strong>
+        <small>Saison 1 · Personnaliser</small>
+      </span>
+    </button>
+  </div>
+
+  <div class="hud hud-right">
+    <span class="chip"><span class="live" id="live-dot"></span><span id="online">Hors ligne</span></span>
+    <button class="btn-gold" id="wallet" type="button">Connecter un wallet</button>
+  </div>
+
+  <div class="prompt" id="prompt" hidden></div>
+  <p class="help">ZQSD / WASD ou clic pour te déplacer · glisser pour tourner · Entrée pour parler</p>
+
+  <form class="chat" id="chat" hidden>
+    <label for="chat-input" class="sr">Message</label>
+    <input id="chat-input" maxlength="80" autocomplete="off" placeholder="Dis quelque chose au hall…" />
+  </form>
+
+  <dialog id="door-dialog">
+    <h2 id="door-title"></h2>
+    <p id="door-text"></p>
+    <div class="row">
+      <button type="button" class="btn-gold" id="door-close">Retour au hall</button>
+    </div>
+  </dialog>
+
+  <dialog id="avatar-dialog">
+    <h2>Ton avatar</h2>
+    <label class="field">Pseudo <input id="name-input" maxlength="20" /></label>
+    <p class="field-label">Tunique</p>
+    <div class="swatches" id="tunics"></div>
+    <p class="field-label">Couvre-chef</p>
+    <div class="helmets" id="helmets"></div>
+    <div class="row"><button type="button" class="btn-gold" id="avatar-save">Valider</button></div>
+  </dialog>
+
+</body>
+</html>
