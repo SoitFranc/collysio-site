@@ -6,8 +6,9 @@
   <title>Collysio — Hall du Colisée</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Lilita+One&family=Nunito:wght@700;800;900&display=swap" rel="stylesheet" />
-  <script type="module" crossorigin src="/assets/index-DrMonZLQ.js"></script>
-  <link rel="stylesheet" crossorigin href="/assets/index-H_nxf46r.css">
+  <script type="module" crossorigin src="/assets/hall-BZUG1SIc.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/net-BP_Hx7pr.js">
+  <link rel="stylesheet" crossorigin href="/assets/net-BBN6gdQ5.css">
 </head>
 <body>
   <canvas id="scene"></canvas>
@@ -24,7 +25,7 @@
   </div>
 
   <div class="hud hud-right">
-    <span class="chip"><span class="live" id="live-dot"></span><span id="online">Hors ligne</span></span>
+    <span class="chip"><span class="live" id="live-dot"></span><span id="online">Connexion à l'Olympe…</span></span>
     <button class="btn-gold" id="wallet" type="button">Connecter un wallet</button>
   </div>
 
@@ -40,7 +41,8 @@
     <h2 id="door-title"></h2>
     <p id="door-text"></p>
     <div class="row">
-      <button type="button" class="btn-gold" id="door-close">Retour au hall</button>
+      <button type="button" class="btn-ghost" id="door-close">Retour au hall</button>
+      <a class="btn-gold" id="door-enter" href="echecs/" hidden>Entrer dans l'arène</a>
     </div>
   </dialog>
 
