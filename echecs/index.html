@@ -6,9 +6,10 @@
   <title>Collysio — Échecs de l'Olympe</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Lilita+One&family=Nunito:wght@700;800;900&display=swap" rel="stylesheet" />
-  <script type="module" crossorigin src="/assets/echecs-C58W1ceM.js"></script>
-  <link rel="modulepreload" crossorigin href="/assets/net-Buu6hSO6.js">
-  <link rel="stylesheet" crossorigin href="/assets/net-CbS3Rpq_.css">
+  <script type="module" crossorigin src="/assets/echecs-D58bXMBO.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/skins-Dvmw4kV4.js">
+  <link rel="modulepreload" crossorigin href="/assets/pieces-DM6sEvIi.js">
+  <link rel="stylesheet" crossorigin href="/assets/skins-DSV6HZLZ.css">
   <link rel="stylesheet" crossorigin href="/assets/echecs-Z8pOlbHW.css">
 </head>
 <body class="chess">
@@ -47,7 +48,7 @@
 
   <dialog id="lobby">
     <h2>Échecs de l'Olympe</h2>
-    <p class="sub">Zeus est roi, Athéna reine. Cadence 5 min + 3 s par coup.</p>
+    <p class="sub">Les échecs classiques en temps réel, cadence 5 min + 3 s par coup. Gagne des drachmes et débloque d'autres sets de pièces à l'Agora.</p>
     <p class="olympe" id="olympe"><span class="live wait" id="olympe-dot"></span><span id="olympe-text">Connexion à l'Olympe…</span></p>
     <div class="stack">
       <button type="button" class="btn-gold" id="btn-quick">Partie rapide</button>
@@ -59,10 +60,6 @@
       </form>
       <button type="button" class="btn-ghost" id="btn-local">Partie locale à deux (même écran)</button>
     </div>
-    <ul class="legend">
-      <li><b>Zeus</b> Roi</li><li><b>Athéna</b> Dame</li><li><b>Temple</b> Tour</li>
-      <li><b>Méduse</b> Fou</li><li><b>Pégase</b> Cavalier</li><li><b>Hoplite</b> Pion</li>
-    </ul>
     <div class="row"><a class="btn-ghost" href="../">Retour au hall</a></div>
   </dialog>
 
@@ -81,12 +78,12 @@
 
   <dialog id="promo">
     <h2>Promotion</h2>
-    <p>Ton hoplite devient…</p>
+    <p>Ton pion devient…</p>
     <div class="promo-choices">
-      <button type="button" data-p="q">Athéna<small>Dame</small></button>
-      <button type="button" data-p="r">Temple<small>Tour</small></button>
-      <button type="button" data-p="b">Méduse<small>Fou</small></button>
-      <button type="button" data-p="n">Pégase<small>Cavalier</small></button>
+      <button type="button" data-p="q">Dame</button>
+      <button type="button" data-p="r">Tour</button>
+      <button type="button" data-p="b">Fou</button>
+      <button type="button" data-p="n">Cavalier</button>
     </div>
   </dialog>
 
