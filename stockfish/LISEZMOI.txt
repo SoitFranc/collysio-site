@@ -1,0 +1,6 @@
+Moteur d'échecs Stockfish 19 (version « lite », un seul fil), compilé en
+WebAssembly par le projet Stockfish.js. Logiciel libre sous licence GPL v3
+(voir COPYING.txt). Il tourne dans un Web Worker séparé du reste du site.
+
+Sources : https://github.com/nmrugg/stockfish.js
+          https://github.com/official-stockfish/Stockfish
