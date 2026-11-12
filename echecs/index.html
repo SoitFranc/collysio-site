@@ -6,12 +6,14 @@
   <title>Collysio — Échecs de l'Olympe</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Lilita+One&family=Nunito:wght@700;800;900&display=swap" rel="stylesheet" />
-  <script type="module" crossorigin src="/assets/echecs-DHiNxoHM.js"></script>
-  <link rel="modulepreload" crossorigin href="/assets/skins-CFqpzDs-.js">
-  <link rel="modulepreload" crossorigin href="/assets/pieces-BeNEN7cz.js">
+  <script type="module" crossorigin src="/assets/echecs-DUbVCauL.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/skins-DKJ8bnQU.js">
+  <link rel="modulepreload" crossorigin href="/assets/models-BPvOrpXA.js">
+  <link rel="modulepreload" crossorigin href="/assets/figurine-ChyKFjcZ.js">
+  <link rel="modulepreload" crossorigin href="/assets/bets-BPJvQRwl.js">
   <link rel="modulepreload" crossorigin href="/assets/levels-CuUO2jUA.js">
   <link rel="stylesheet" crossorigin href="/assets/skins-Dlpo1zHo.css">
-  <link rel="stylesheet" crossorigin href="/assets/echecs-Z8pOlbHW.css">
+  <link rel="stylesheet" crossorigin href="/assets/echecs-CATQJwU8.css">
 </head>
 <body class="chess">
   <canvas id="scene"></canvas>
@@ -54,6 +56,7 @@
     <div class="stack">
       <button type="button" class="btn-gold" id="btn-quick">Partie rapide</button>
       <button type="button" class="btn-ghost" id="btn-private">Créer une partie privée</button>
+      <button type="button" class="btn-ghost" id="btn-stake">Partie avec mise (crypto)</button>
       <form class="code-row" id="code-form">
         <label for="code-input" class="sr">Code de partie</label>
         <input id="code-input" maxlength="5" placeholder="CODE" autocomplete="off" autocapitalize="characters" />
@@ -66,12 +69,23 @@
     <div class="row"><a class="btn-ghost" href="../">Retour au hall</a></div>
   </dialog>
 
+  <dialog id="stake">
+    <h2>Partie avec mise</h2>
+    <div id="stake-body"><p>Chargement des paliers…</p></div>
+    <div class="row"><button type="button" class="btn-ghost" id="btn-stake-back">Retour</button></div>
+  </dialog>
+
   <dialog id="waiting">
     <h2 id="waiting-title">Recherche d'un adversaire…</h2>
     <p id="waiting-text"></p>
     <div class="code-box" id="code-box" hidden>
       <span class="code" id="code-value"></span>
       <button type="button" class="btn-gold small" id="btn-copy">Copier le lien</button>
+    </div>
+    <div class="bet-box" id="bet-box" hidden>
+      <p id="bet-text"></p>
+      <p class="bet-deposits" id="bet-deposits"></p>
+      <button type="button" class="btn-gold" id="btn-deposit">Déposer ma mise</button>
     </div>
     <div class="row">
       <button type="button" class="btn-ghost" id="btn-wait-local" hidden>Jouer en local à la place</button>
