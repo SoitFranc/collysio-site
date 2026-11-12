@@ -6,16 +6,16 @@
   <title>Collysio — Hall du Colisée</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Lilita+One&family=Nunito:wght@700;800;900&display=swap" rel="stylesheet" />
-  <script type="module" crossorigin src="/assets/hall-DlbhoBtZ.js"></script>
-  <link rel="modulepreload" crossorigin href="/assets/skins-CLwkws7H.js">
-  <link rel="modulepreload" crossorigin href="/assets/kit-D8CvU-nQ.js">
-  <link rel="modulepreload" crossorigin href="/assets/character-3kx6bOzU.js">
-  <link rel="modulepreload" crossorigin href="/assets/heroes-tx2FSb5X.js">
-  <link rel="modulepreload" crossorigin href="/assets/pieces-CPaxTs9p.js">
-  <link rel="modulepreload" crossorigin href="/assets/figures-CZkxv8Dd.js">
-  <link rel="modulepreload" crossorigin href="/assets/figures-E518JZAe.js">
-  <link rel="modulepreload" crossorigin href="/assets/chariot-pdz3xMan.js">
-  <link rel="stylesheet" crossorigin href="/assets/skins-B147fKCu.css">
+  <script type="module" crossorigin src="/assets/hall-C9XhtgwX.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/skins-fK7pvwTH.js">
+  <link rel="modulepreload" crossorigin href="/assets/colisee-FqptcP0h.js">
+  <link rel="modulepreload" crossorigin href="/assets/character-CFA-HtCe.js">
+  <link rel="modulepreload" crossorigin href="/assets/heroes-CTOd62nA.js">
+  <link rel="modulepreload" crossorigin href="/assets/pieces-CmOKzbYe.js">
+  <link rel="modulepreload" crossorigin href="/assets/figures-CCUxaKpE.js">
+  <link rel="modulepreload" crossorigin href="/assets/figures-BgDJicAE.js">
+  <link rel="modulepreload" crossorigin href="/assets/chariot-DdMSF063.js">
+  <link rel="stylesheet" crossorigin href="/assets/skins-B9A9n__2.css">
   <link rel="stylesheet" crossorigin href="/assets/hall-B44WZWY0.css">
 </head>
 <body>
@@ -30,6 +30,13 @@
         <small id="profile-sub">Saison 1 · Personnaliser</small>
       </span>
     </button>
+    <button class="chip prog" id="prog" type="button" hidden aria-label="Niveau et quêtes du jour">
+      <strong id="prog-level">Niv. 1</strong>
+      <span class="prog-bar"><i id="prog-fill"></i><small id="prog-xp"></small></span>
+      <span id="prog-streak">Quêtes</span>
+      <b id="prog-dot" hidden>1</b>
+    </button>
+    <div class="quests" id="quests" hidden></div>
   </div>
 
   <div class="hud hud-right">
@@ -39,7 +46,7 @@
   </div>
 
   <div class="prompt" id="prompt" hidden></div>
-  <p class="help">ZQSD / WASD ou clic pour te déplacer · glisser pour tourner · Entrée pour parler</p>
+  <p class="help">ZQSD / WASD ou clic pour te déplacer · Espace pour sauter · glisser pour tourner · Entrée pour parler</p>
 
   <form class="chat" id="chat" hidden>
     <label for="chat-input" class="sr">Message</label>
