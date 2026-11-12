@@ -1,0 +1,3 @@
+donjon.glb : pièces du pack « KayKit Dungeon Remastered 1.0 » de Kay Lousberg (www.kaylousberg.com),
+licence CC0 1.0 (domaine public). Les pièces utiles sont fondues dans un seul fichier (un nœud par
+pièce, une seule texture) et compressées avec gltf-transform (meshopt).
