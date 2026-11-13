@@ -1,3 +1,12 @@
 donjon.glb : pièces du pack « KayKit Dungeon Remastered 1.0 » de Kay Lousberg (www.kaylousberg.com),
 licence CC0 1.0 (domaine public). Les pièces utiles sont fondues dans un seul fichier (un nœud par
 pièce, une seule texture) et compressées avec gltf-transform (meshopt).
+
+nature.glb : arbres, buisson et rochers du « Stylized Nature MegaKit » de Quaternius
+(https://quaternius.com), licence CC0 1.0 (domaine public) ; fichiers glTF repris du dépôt public
+github.com/tilakpatell/tilakverse-assets (quaternius/stylized-nature-megakit, avec sa licence).
+Sept pièces : pin_A, pin_B (TwistedTree_1 et _4, feuillage vert sombre : pins parasols), olivier_A,
+olivier_B (TwistedTree_3 et _5, feuillage argenté), buisson (Bush_Common), rocher (Rock_Medium_1),
+rocher_grand (Rock_Big_1). Troncs simplifiés (environ 1 100 triangles), un quad de feuillage sur trois
+retiré, textures réduites à 512 px (WebP), compression meshopt. Script : tools/kit/nature.mjs.
+Sert au décor de la Course des Chars (client/src/chars/scenery.ts, `loadKit("nature")`).

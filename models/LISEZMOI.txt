@@ -2,3 +2,13 @@ Personnages 3D : « KayKit — Character Pack : Adventurers » de Kay Lousberg
 (www.kaylousberg.com), sous licence CC0 1.0 (domaine public), animations
 réduites à celles qu'utilise le jeu.
 https://github.com/KayKit-Game-Assets/KayKit-Character-Pack-Adventures-1.0
+
+Horse.glb : cheval de l'« Ultimate Animated Animal Pack » (juillet 2021) de
+Quaternius (https://quaternius.com/packs/ultimateanimatedanimals.html), sous
+licence CC0 1.0 (domaine public) ; fichier glTF repris du dépôt public
+github.com/joaopaulony/cityofgod (assets/pets/quaternius, avec sa licence). Squelette, maillage et animations d'origine ;
+on n'a gardé que cinq animations (Gallop, Gallop_Jump, Walk, Idle,
+Idle_HitReact1), retiré les pistes des os de contrôle, puis compressé avec
+gltf-transform (meshopt, sans quantification). Script : tools/modeles/cheval.mjs.
+Sert à l'attelage de la Course des Chars (client/src/chars/attelage.ts) et,
+figé dans une pose, aux statues équestres (client/src/chars/statues.ts).
