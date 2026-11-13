@@ -1,0 +1,1 @@
+export{t as EffectComposer}from"./EffectComposer-bx_g4NYc.js";
