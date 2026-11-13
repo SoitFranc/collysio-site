@@ -6,25 +6,25 @@
   <title>Collysio — Hall du Colisée</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Lilita+One&family=Nunito:wght@700;800;900&display=swap" rel="stylesheet" />
-  <script type="module" crossorigin src="/assets/hall-DLOdXzAa.js"></script>
-  <link rel="modulepreload" crossorigin href="/assets/three.core-C0AaZpLP.js">
-  <link rel="modulepreload" crossorigin href="/assets/skins-BlmWrJFJ.js">
-  <link rel="modulepreload" crossorigin href="/assets/models-BF6gafW8.js">
-  <link rel="modulepreload" crossorigin href="/assets/heroes-DNXCfAp2.js">
+  <script type="module" crossorigin src="/assets/hall-CYP7OjXN.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/three.core-CxKbJF20.js">
+  <link rel="modulepreload" crossorigin href="/assets/skins-CdFdL_xK.js">
+  <link rel="modulepreload" crossorigin href="/assets/models-GkpvBGrm.js">
+  <link rel="modulepreload" crossorigin href="/assets/heroes-BW_2_Kx_.js">
   <link rel="modulepreload" crossorigin href="/assets/CopyShader-CHGAmNbz.js">
-  <link rel="modulepreload" crossorigin href="/assets/Pass-Qk0PFMCB.js">
-  <link rel="modulepreload" crossorigin href="/assets/EffectComposer-Dr9CsLus.js">
-  <link rel="modulepreload" crossorigin href="/assets/RenderPass-DO_m8j0G.js">
-  <link rel="modulepreload" crossorigin href="/assets/UnrealBloomPass-y2o8sEYP.js">
-  <link rel="modulepreload" crossorigin href="/assets/OutputPass-X20OMCBc.js">
-  <link rel="modulepreload" crossorigin href="/assets/colisee-B3SAD51G.js">
-  <link rel="modulepreload" crossorigin href="/assets/bets-CR5fJ6gq.js">
-  <link rel="modulepreload" crossorigin href="/assets/figurine-DtoPZdY2.js">
-  <link rel="modulepreload" crossorigin href="/assets/figures-_EesaqJw.js">
-  <link rel="modulepreload" crossorigin href="/assets/figures-YxwDcwOi.js">
-  <link rel="modulepreload" crossorigin href="/assets/chariot-ClRjCXAt.js">
-  <link rel="stylesheet" crossorigin href="/assets/skins-Dlpo1zHo.css">
-  <link rel="stylesheet" crossorigin href="/assets/hall-C2_TEfc3.css">
+  <link rel="modulepreload" crossorigin href="/assets/Pass--bjTahd-.js">
+  <link rel="modulepreload" crossorigin href="/assets/EffectComposer-Bve4nLy5.js">
+  <link rel="modulepreload" crossorigin href="/assets/RenderPass-EH2JaqNj.js">
+  <link rel="modulepreload" crossorigin href="/assets/UnrealBloomPass-C0shH8u0.js">
+  <link rel="modulepreload" crossorigin href="/assets/OutputPass-DaLaKJLh.js">
+  <link rel="modulepreload" crossorigin href="/assets/colisee-Cr3rnyI0.js">
+  <link rel="modulepreload" crossorigin href="/assets/bets-DdXvz_nN.js">
+  <link rel="modulepreload" crossorigin href="/assets/figurine-6DW_LkSt.js">
+  <link rel="modulepreload" crossorigin href="/assets/figures-B-uYN8NF.js">
+  <link rel="modulepreload" crossorigin href="/assets/figures-BFNENMg0.js">
+  <link rel="modulepreload" crossorigin href="/assets/chariot-BUVYivM_.js">
+  <link rel="stylesheet" crossorigin href="/assets/skins-KHnUzGTC.css">
+  <link rel="stylesheet" crossorigin href="/assets/hall-4Wd-bLME.css">
 </head>
 <body>
   <canvas id="scene"></canvas>
@@ -33,6 +33,7 @@
   <div class="hud hud-left">
     <button class="chip" id="profile" type="button" aria-label="Personnaliser ton avatar">
       <span class="chip-dot" id="profile-dot"></span>
+      <b class="chip-warn" id="profile-warn" hidden title="Profil non sauvegardé">!</b>
       <span>
         <strong id="profile-name">Gladiateur</strong>
         <small id="profile-sub">Saison 1 · Personnaliser</small>
@@ -72,13 +73,17 @@
   </dialog>
 
   <dialog id="avatar-dialog">
-    <h2>Ton avatar</h2>
-    <label class="field">Pseudo <input id="name-input" maxlength="20" /></label>
-    <p class="field-label">Tunique</p>
-    <div class="swatches" id="tunics"></div>
-    <p class="field-label">Couvre-chef</p>
-    <div class="helmets" id="helmets"></div>
-    <div class="row"><button type="button" class="btn-gold" id="avatar-save">Valider</button></div>
+    <section class="account" id="account" aria-label="Mon compte"></section>
+    <div id="avatar-edit">
+      <h2>Ton avatar</h2>
+      <label class="field">Pseudo <input id="name-input" maxlength="20" /></label>
+      <p class="field-label">Cape</p>
+      <div class="swatches" id="tunics"></div>
+      <p class="field-label">Tenue</p>
+      <div class="helmets" id="helmets"></div>
+      <button type="button" class="btn-ghost collection-link" id="avatar-collection">Ma collection : armes, capes, titres, familles →</button>
+      <div class="row"><button type="button" class="btn-ghost" id="avatar-close">Fermer</button><button type="button" class="btn-gold" id="avatar-save">Valider</button></div>
+    </div>
   </dialog>
 
 </body>

@@ -1,0 +1,1 @@
+export{t as EffectComposer}from"./EffectComposer-Bve4nLy5.js";
