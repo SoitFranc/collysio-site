@@ -6,25 +6,25 @@
   <title>Collysio — Hall du Colisée</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Lilita+One&family=Nunito:wght@700;800;900&display=swap" rel="stylesheet" />
-  <script type="module" crossorigin src="/assets/hall-CYP7OjXN.js"></script>
+  <script type="module" crossorigin src="/assets/hall-B4WzrsDz.js"></script>
   <link rel="modulepreload" crossorigin href="/assets/three.core-CxKbJF20.js">
-  <link rel="modulepreload" crossorigin href="/assets/skins-CdFdL_xK.js">
-  <link rel="modulepreload" crossorigin href="/assets/models-GkpvBGrm.js">
-  <link rel="modulepreload" crossorigin href="/assets/heroes-BW_2_Kx_.js">
+  <link rel="modulepreload" crossorigin href="/assets/skins-CUWNFmT-.js">
+  <link rel="modulepreload" crossorigin href="/assets/models-D1nnVUHU.js">
+  <link rel="modulepreload" crossorigin href="/assets/heroes-QFadOG9C.js">
   <link rel="modulepreload" crossorigin href="/assets/CopyShader-CHGAmNbz.js">
   <link rel="modulepreload" crossorigin href="/assets/Pass--bjTahd-.js">
   <link rel="modulepreload" crossorigin href="/assets/EffectComposer-Bve4nLy5.js">
   <link rel="modulepreload" crossorigin href="/assets/RenderPass-EH2JaqNj.js">
   <link rel="modulepreload" crossorigin href="/assets/UnrealBloomPass-C0shH8u0.js">
   <link rel="modulepreload" crossorigin href="/assets/OutputPass-DaLaKJLh.js">
-  <link rel="modulepreload" crossorigin href="/assets/colisee-Cr3rnyI0.js">
-  <link rel="modulepreload" crossorigin href="/assets/bets-DdXvz_nN.js">
-  <link rel="modulepreload" crossorigin href="/assets/figurine-6DW_LkSt.js">
-  <link rel="modulepreload" crossorigin href="/assets/figures-B-uYN8NF.js">
-  <link rel="modulepreload" crossorigin href="/assets/figures-BFNENMg0.js">
-  <link rel="modulepreload" crossorigin href="/assets/chariot-BUVYivM_.js">
-  <link rel="stylesheet" crossorigin href="/assets/skins-KHnUzGTC.css">
-  <link rel="stylesheet" crossorigin href="/assets/hall-4Wd-bLME.css">
+  <link rel="modulepreload" crossorigin href="/assets/colisee-B_VZcff1.js">
+  <link rel="modulepreload" crossorigin href="/assets/bets-BNsYkmuS.js">
+  <link rel="modulepreload" crossorigin href="/assets/figurine-DXcw0t6G.js">
+  <link rel="modulepreload" crossorigin href="/assets/figures-DjXWcgDE.js">
+  <link rel="modulepreload" crossorigin href="/assets/figures-CWpqwVR_.js">
+  <link rel="modulepreload" crossorigin href="/assets/chariot-Ds61W-cu.js">
+  <link rel="stylesheet" crossorigin href="/assets/skins-B7NbHYRM.css">
+  <link rel="stylesheet" crossorigin href="/assets/hall-KMsjqv8D.css">
 </head>
 <body>
   <canvas id="scene"></canvas>
@@ -76,12 +76,21 @@
     <section class="account" id="account" aria-label="Mon compte"></section>
     <div id="avatar-edit">
       <h2>Ton avatar</h2>
-      <label class="field">Pseudo <input id="name-input" maxlength="20" /></label>
-      <p class="field-label">Cape</p>
-      <div class="swatches" id="tunics"></div>
+      <div class="avatar-top">
+        <div class="avatar-preview" id="avatar-preview" aria-label="Aperçu de ton personnage"></div>
+        <div class="avatar-fields">
+          <label class="field">Pseudo <input id="name-input" maxlength="20" /></label>
+          <p class="field-label">Tête</p>
+          <div class="helmets" id="heads"></div>
+        </div>
+      </div>
       <p class="field-label">Tenue</p>
       <div class="helmets" id="helmets"></div>
-      <button type="button" class="btn-ghost collection-link" id="avatar-collection">Ma collection : armes, capes, titres, familles →</button>
+      <p class="field-label">Livrée <small>une teinture de la tenue</small></p>
+      <div class="helmets liveries" id="liveries"></div>
+      <p class="field-label">Cape</p>
+      <div class="swatches" id="tunics"></div>
+      <button type="button" class="btn-ghost collection-link" id="avatar-collection">Ma collection : bras, jambes, armes, titres, familles →</button>
       <div class="row"><button type="button" class="btn-ghost" id="avatar-close">Fermer</button><button type="button" class="btn-gold" id="avatar-save">Valider</button></div>
     </div>
   </dialog>
