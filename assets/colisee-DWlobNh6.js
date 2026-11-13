@@ -1,4 +1,4 @@
-import{U as e,V as t}from"./skins-CUWNFmT-.js";import{Bt as n,Dt as r,F as i,Fn as a,Gn as o,Gt as s,Hn as c,Kn as l,Lt as u,St as d,U as f,Y as p,bt as m,c as h,f as g,v as _,vr as v,w as y,xt as b,yr as x}from"./three.core-CxKbJF20.js";var S={value:0},C=new n(1,1).translate(0,.5,0);function w(e,t,n=`#ff8a1e`){let r=new o({uniforms:{uTime:S,uSize:{value:new v(e,t)},uSeed:{value:Math.random()*20},uTint:{value:new _(n)}},transparent:!0,depthWrite:!1,blending:2,vertexShader:`
+import{Y as e,q as t}from"./skins-CFIDq2NA.js";import{Bt as n,Dt as r,F as i,Fn as a,Gn as o,Gt as s,Hn as c,Kn as l,Lt as u,St as d,U as f,Y as p,bt as m,c as h,f as g,v as _,vr as v,w as y,xt as b,yr as x}from"./three.core-CxKbJF20.js";var S={value:0},C=new n(1,1).translate(0,.5,0);function w(e,t,n=`#ff8a1e`){let r=new o({uniforms:{uTime:S,uSize:{value:new v(e,t)},uSeed:{value:Math.random()*20},uTint:{value:new _(n)}},transparent:!0,depthWrite:!1,blending:2,vertexShader:`
       uniform vec2 uSize;
       varying vec2 vUv;
       void main() {
