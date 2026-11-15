@@ -1,0 +1,47 @@
+Sons enregistrés de Collysio — sources et licences
+==================================================
+
+Presque tout le son du jeu (musique, ambiances, interface, la plupart des
+bruitages) est synthétisé dans le navigateur (client/src/audio/). Les seuls
+fichiers sont ceux-ci : des chocs et manipulations d'objets réels, plus
+naturels enregistrés que synthétisés. Chaque fichier a une recette
+synthétique de secours, utilisée tant qu'il n'est pas chargé.
+
+Licence de TOUS les fichiers de ce dossier : CC0 1.0 Universel (domaine
+public), par Kenney (www.kenney.nl). Aucune attribution n'est exigée ; on la
+donne quand même.
+
+Traitement : converti en mono 44,1 kHz, silences de début et de fin retirés,
+crête calée à -3 dBFS, fondus de 1,5 ms / 12 ms, MP3 80 kbit/s.
+
+Pack « Impact Sounds » (Kenney, CC0) — copie publique :
+  https://github.com/Boyquotes/kenney-impact-sounds-for-godot
+  (commit 999dd1684873f8b020a3aa5b26e713da21688924, fichier LICENSE = CC0 1.0)
+  pas1.mp3 pas2.mp3 pas3.mp3 pas4.mp3 pas5.mp3
+                             ← footstep_concrete_000 … 004.ogg   (pas dans le hall)
+  bois1.mp3 bois2.mp3 bois3.mp3 bois4.mp3 bois5.mp3
+                             ← impact_wood_light_000 … 004.ogg   (pièce posée)
+  prise1.mp3 prise2.mp3 prise3.mp3 ← impact_wood_medium_000 … 002.ogg (prise)
+  coup1.mp3 coup2.mp3 coup3.mp3 ← impact_punch_medium_000 … 002.ogg (coup reçu, Arène)
+  coup-fort1.mp3 coup-fort2.mp3 coup-fort3.mp3 ← impact_punch_heavy_000 … 002.ogg (gros coup)
+  metal1.mp3 metal2.mp3 metal3.mp3 ← impact_metal_light_000 … 002.ogg (bouclier, parade)
+  planche1.mp3 planche2.mp3 planche3.mp3 ← impact_plank_medium_000 … 002.ogg (choc de char)
+
+Pack « RPG Audio » (Kenney, CC0) — copie publique :
+  https://github.com/Boyquotes/kenney-rpg-audio-for-godot
+  (commit 22eb79bb843bbcadcaa6ed119353a33265ffad11, fichier LICENSE = CC0 1.0)
+  pieces1.mp3                ← handle_coins.ogg                  (drachmes)
+  pieces2.mp3                ← handle_coins_2.ogg
+  loquet.mp3                 ← metal_latch.ogg                   (marqueur de contrôle)
+
+Pack « Casino Audio » (Kenney, CC0) — copie publique du « Kenney Asset Pack 1 » :
+  https://github.com/ismetcabbar9-oss/kenney-audio-assets
+  (commit b7729283e47d38f203d85560cfda5b2c1fd6fc7e, LICENSE.md = CC0 1.0,
+  README : « Copyright (c) 2014 Kenney — Licensed under CC0 1.0 Universal »)
+  jeton1.mp3 jeton2.mp3 jeton3.mp3 ← Casino sounds/chipLay1 … 3.ogg (jeton posé, Champ d'Honneur)
+  sac1.mp3                   ← Casino sounds/chipsHandle2.ogg    (jetons tirés du sac)
+  sac2.mp3                   ← Casino sounds/chipsHandle3.ogg
+
+Pour ajouter un fichier : CC0 uniquement, vérifié fichier par fichier ; mono,
+MP3 64-96 kbit/s, moins de 40 ko (bruitage) ; une ligne ici (source, licence,
+fichier d'origine) ; déclaré dans `fichiers` du bruitage (bruitages.ts).
