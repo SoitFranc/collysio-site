@@ -1,38 +1,198 @@
 <!doctype html>
 <html lang="fr">
 <head>
+  <script>(function () {
+  var w = window;
+  var d = document;
+  if (location.protocol === "http:" && /(^|\.)collysio\.com$/.test(location.hostname)) {
+    location.replace("https:" + location.href.slice(5));
+    return;
+  }
+  function memoire() {
+    var m = {};
+    return {
+      getItem: function (k) { return Object.prototype.hasOwnProperty.call(m, k) ? m[k] : null; },
+      setItem: function (k, v) { m[k] = String(v); },
+      removeItem: function (k) { delete m[k]; },
+      clear: function () { m = {}; },
+      key: function (i) { return Object.keys(m)[i] || null; },
+      get length() { return Object.keys(m).length; },
+    };
+  }
+  ["localStorage", "sessionStorage"].forEach(function (nom) {
+    try {
+      var s = w[nom];
+      s.setItem("collysio.essai", "1");
+      s.removeItem("collysio.essai");
+    } catch (e) {
+      try {
+        Object.defineProperty(w, nom, { value: memoire(), configurable: true });
+      } catch (e2) { /* tant pis : chaque lecture du jeu est déjà protégée */ }
+    }
+  });
+  var serveur = "https://collysio-server-qec8.onrender.com";
+  if (!serveur) serveur = (location.protocol === "https:" ? "https://" : "http://") + location.hostname + ":2567";
+  var reveil = (w.__reveil = { debut: Date.now(), ok: null, ms: 0 });
+  function sonder(essai) {
+    if (!w.fetch) return;
+    fetch(serveur + "/health", { cache: "no-store", mode: "cors" })
+      .then(function (r) {
+        if (!r.ok) throw new Error(String(r.status));
+        reveil.ok = true;
+        reveil.ms = Date.now() - reveil.debut;
+        try { w.dispatchEvent(new Event("collysio:serveur-eveille")); } catch (e) { /* vieux navigateur */ }
+      })
+      .catch(function () {
+        reveil.ok = false;
+        if (essai < 12) setTimeout(function () { sonder(essai + 1); }, 5000);
+      });
+  }
+  sonder(0);
+  function secours(titre, texte, recharger) {
+    function poser() {
+      if (d.getElementById("secours")) return;
+      var el = d.createElement("div");
+      el.id = "secours";
+      el.setAttribute("role", "alert");
+      el.style.cssText =
+        "position:fixed;inset:0;z-index:2147483600;display:flex;align-items:center;justify-content:center;padding:24px;" +
+        "background:radial-gradient(ellipse at 50% 30%,#2a1d4a 0%,#0d0e2b 70%);color:#fff6e3;font:700 16px/1.5 Nunito,system-ui,sans-serif;text-align:center";
+      el.innerHTML =
+        '<div style="max-width:440px;padding:24px;border-radius:18px;background:#1c130b;border:4px solid #2a1a0c;box-shadow:inset 0 0 0 3px #b8863b">' +
+        '<h1 style="margin:0 0 10px;font:900 24px Cinzel,serif;color:#ffc83d;letter-spacing:1px"></h1><p style="margin:0;color:#f3e2c0"></p>' +
+        (recharger ? '<button type="button" style="margin-top:16px;min-height:48px;padding:8px 18px;font:20px \'Lilita One\',sans-serif;color:#0e1033;background:#ffc83d;border:4px solid #000;border-radius:16px;cursor:pointer">Recharger</button>' : "") +
+        "</div>";
+      el.querySelector("h1").textContent = titre;
+      el.querySelector("p").textContent = texte;
+      var b = el.querySelector("button");
+      if (b) b.onclick = function () { location.reload(); };
+      d.body.appendChild(el);
+    }
+    if (d.body) poser();
+    else d.addEventListener("DOMContentLoaded", poser);
+  }
+  w.__secours = secours;
+  var moderne = !!([].at && Object.hasOwn && w.Promise && "noModule" in d.createElement("script"));
+  if (!moderne) {
+    secours("Navigateur trop ancien", "Le Colisée a besoin d'un navigateur récent. Mets à jour Chrome, Firefox, Safari ou Edge, puis reviens : les portes t'attendent.", false);
+    return;
+  }
+  var gl = null;
+  try {
+    var c = d.createElement("canvas");
+    gl = c.getContext("webgl2") || c.getContext("webgl");
+    var perte = gl && gl.getExtension("WEBGL_lose_context");
+    if (perte) perte.loseContext();
+  } catch (e) { gl = null; }
+  if (!gl) {
+    w.__sans3d = true;
+    secours(
+      "La 3D est désactivée",
+      "Ton navigateur n'affiche pas la 3D (WebGL). Active l'accélération matérielle dans ses réglages, ou essaie un autre navigateur, puis recharge la page.",
+      true
+    );
+    return;
+  }
+  function rechargerUneFois() {
+    var cle = "collysio.recharge";
+    var deja = 0;
+    try { deja = Number(sessionStorage.getItem(cle) || 0); } catch (e) { /* rien */ }
+    if (Date.now() - deja > 60000) {
+      try { sessionStorage.setItem(cle, String(Date.now())); } catch (e) { /* rien */ }
+      location.reload();
+    } else secours("Le Colisée n'a pas pu s'ouvrir", "Un fichier du jeu n'arrive pas. Vérifie ta connexion, puis recharge la page.", true);
+  }
+  w.addEventListener("vite:preloadError", function (e) { e.preventDefault(); rechargerUneFois(); });
+  w.addEventListener(
+    "error",
+    function (e) {
+      var t = e.target;
+      if (t && t !== w && (t.tagName === "SCRIPT" || (t.tagName === "LINK" && /modulepreload|stylesheet/.test(t.rel) && /\/assets\//.test(t.href)))) rechargerUneFois();
+    },
+    true
+  );
+})();
+</script>
+
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Collysio — Hall du Colisée</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Lilita+One&family=Nunito:wght@700;800;900&display=swap" rel="stylesheet" />
-  <script type="module" crossorigin src="/assets/hall-C41tv6lz.js"></script>
-  <link rel="modulepreload" crossorigin href="/assets/three.core-CqgYfYmH.js">
+  <script type="module" crossorigin src="/assets/hall-jeGDQg42.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/three.core-5VOlvwnv.js">
   <link rel="modulepreload" crossorigin href="/assets/rolldown-runtime-WkwZ5CU-.js">
-  <link rel="modulepreload" crossorigin href="/assets/preload-helper-BhxCHtXK.js">
+  <link rel="modulepreload" crossorigin href="/assets/preload-helper-CVTGzuIM.js">
   <link rel="modulepreload" crossorigin href="/assets/audio-D6dYZxrT.js">
-  <link rel="modulepreload" crossorigin href="/assets/bouton-C3teRTnd.js">
-  <link rel="modulepreload" crossorigin href="/assets/flame-BUr1wK4C.js">
-  <link rel="modulepreload" crossorigin href="/assets/models-Xm-X6p3J.js">
-  <link rel="modulepreload" crossorigin href="/assets/heroes-B1xPg9iP.js">
+  <link rel="modulepreload" crossorigin href="/assets/bouton-CDjIlRUC.js">
+  <link rel="modulepreload" crossorigin href="/assets/heroes-DJkA0Avn.js">
   <link rel="modulepreload" crossorigin href="/assets/CopyShader-CHGAmNbz.js">
-  <link rel="modulepreload" crossorigin href="/assets/Pass-bBvFR5hV.js">
-  <link rel="modulepreload" crossorigin href="/assets/EffectComposer-Co-UtpW1.js">
-  <link rel="modulepreload" crossorigin href="/assets/RenderPass-B4Y64WVU.js">
-  <link rel="modulepreload" crossorigin href="/assets/UnrealBloomPass-C9AoHqHr.js">
-  <link rel="modulepreload" crossorigin href="/assets/OutputPass-CEqOla5g.js">
-  <link rel="modulepreload" crossorigin href="/assets/tribunes-DgJndjTU.js">
-  <link rel="modulepreload" crossorigin href="/assets/bets-B3P3l0sa.js">
-  <link rel="modulepreload" crossorigin href="/assets/figurine-XaqnMZyz.js">
-  <link rel="modulepreload" crossorigin href="/assets/figures-G92pyDDf.js">
-  <link rel="modulepreload" crossorigin href="/assets/figures-BNmKeFqA.js">
-  <link rel="modulepreload" crossorigin href="/assets/chariot-CMzcelUG.js">
-  <link rel="modulepreload" crossorigin href="/assets/chat-lIqZNnST.js">
-  <link rel="stylesheet" crossorigin href="/assets/bouton-B83c8tsp.css">
-  <link rel="stylesheet" crossorigin href="/assets/chat-BErYv1Q3.css">
-  <link rel="stylesheet" crossorigin href="/assets/hall-CsxI72aS.css">
+  <link rel="modulepreload" crossorigin href="/assets/Pass-DflKGk1i.js">
+  <link rel="modulepreload" crossorigin href="/assets/EffectComposer-DHmy4JbY.js">
+  <link rel="modulepreload" crossorigin href="/assets/RenderPass-Be52Dbf_.js">
+  <link rel="modulepreload" crossorigin href="/assets/UnrealBloomPass-C4dzADAg.js">
+  <link rel="modulepreload" crossorigin href="/assets/OutputPass-B9mxZziw.js">
+  <link rel="modulepreload" crossorigin href="/assets/tribunes-BTbl8pny.js">
+  <link rel="modulepreload" crossorigin href="/assets/flame-B_ey_TWY.js">
+  <link rel="modulepreload" crossorigin href="/assets/bets-C2Yhua_9.js">
+  <link rel="modulepreload" crossorigin href="/assets/figurine-3xsAACfK.js">
+  <link rel="modulepreload" crossorigin href="/assets/figures-Cb6ZQikE.js">
+  <link rel="modulepreload" crossorigin href="/assets/figures-D8z4PvTP.js">
+  <link rel="modulepreload" crossorigin href="/assets/chariot-BnLUsJNk.js">
+  <link rel="modulepreload" crossorigin href="/assets/chat-D3D5XrLx.js">
+  <link rel="stylesheet" crossorigin href="/assets/bouton-CGnACGMD.css">
+  <link rel="stylesheet" crossorigin href="/assets/chat-BBWRGDwd.css">
+  <link rel="stylesheet" crossorigin href="/assets/hall-DZ5ftkaR.css">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <meta name="description" content="Un Colisée hors du temps, de nuit, sous une épée d&#39;or. Joue en 3D dans ton navigateur : échecs, labyrinthe, course de chars, arène de combat. Gratuit, sans installation, seul ou à plusieurs.">
+  <meta name="theme-color" content="#0e1033">
+  <link rel="canonical" href="https://collysio.com/">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="/icons/icone-32.png" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Collysio">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Collysio">
+  <meta property="og:locale" content="fr_FR">
+  <meta property="og:title" content="Collysio — Hall du Colisée">
+  <meta property="og:description" content="Un Colisée hors du temps, de nuit, sous une épée d&#39;or. Joue en 3D dans ton navigateur : échecs, labyrinthe, course de chars, arène de combat. Gratuit, sans installation, seul ou à plusieurs.">
+  <meta property="og:url" content="https://collysio.com/">
+  <meta property="og:image" content="https://collysio.com/apercu.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Le hall de Collysio : l&#39;arène d&#39;un Colisée, de nuit, éclairée aux torches, sous une épée d&#39;or suspendue.">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Collysio — Hall du Colisée">
+  <meta name="twitter:description" content="Un Colisée hors du temps, de nuit, sous une épée d&#39;or. Joue en 3D dans ton navigateur : échecs, labyrinthe, course de chars, arène de combat. Gratuit, sans installation, seul ou à plusieurs.">
+  <meta name="twitter:image" content="https://collysio.com/apercu.jpg">
 </head>
 <body>
+  <!-- Écran de chargement : peint avant le téléchargement du jeu, animé par src/chargeur.ts. -->
+  <div id="chargeur" role="progressbar" aria-label="Chargement du Colisée" aria-valuemin="0" aria-valuemax="100" aria-valuenow="5">
+    <style>#chargeur{z-index:2147483000;text-align:center;color:#fff6e3;background:radial-gradient(1.5px 1.5px at 12% 18%,#fff6e3 50%,#0000 51%),radial-gradient(1px 1px at 27% 8%,#bcd3ff 50%,#0000 51%),radial-gradient(1.5px 1.5px at 71% 14%,#fff6e3 50%,#0000 51%),radial-gradient(1px 1px at 86% 30%,#bcd3ff 50%,#0000 51%),radial-gradient(1px 1px at 8% 44%,#fff6e3 50%,#0000 51%),radial-gradient(1.5px 1.5px at 92% 9%,#fff6e3 50%,#0000 51%),radial-gradient(1px 1px at 58% 5%,#fff6e3 50%,#0000 51%),radial-gradient(1px 1px at 40% 24%,#bcd3ff 50%,#0000 51%),radial-gradient(90% 50% at 50% 118%,#ff8a2852 0%,#ff8a2800 70%),radial-gradient(at 50% 32%,#2d2466 0%,#16123f 42%,#0d0e2b 78%);flex-direction:column;justify-content:center;align-items:center;gap:10px;padding:24px 16px;font:700 15px/1.45 Nunito,system-ui,sans-serif;transition:opacity .7s,visibility .7s;display:flex;position:fixed;inset:0}#chargeur.fin{opacity:0;visibility:hidden;pointer-events:none}#chargeur .ch-embleme{filter:drop-shadow(0 0 22px #ffc83d61);width:160px;height:160px;animation:3.2s ease-in-out infinite ch-flotte}#chargeur .ch-titre{letter-spacing:.22em;color:#ffc83d;text-shadow:0 2px #6e4a22,0 0 24px #ffc83d40;margin:2px 0 6px;padding-left:.22em;font:900 clamp(30px,8vw,44px) Cinzel,Georgia,serif}#chargeur .ch-barre{background:#1c130b;border:3px solid #000;border-radius:999px;width:min(320px,72vw);height:16px;overflow:hidden;box-shadow:inset 0 0 0 2px #6e4a22}#chargeur .ch-barre i{background:linear-gradient(#ffe7a0,#ffc83d 55%,#c98a1b);border-radius:999px;width:12%;height:100%;animation:1.2s ease-out ch-debut;display:block;box-shadow:0 0 12px #ffc83d99}#chargeur .ch-etape{color:#f3e2c0;min-height:1.45em;margin:4px 0 0;font-size:14px}#chargeur .ch-phrase{color:#d9c7a3;max-width:360px;min-height:2.9em;margin:18px 0 0;font-style:italic;font-weight:700;transition:opacity .35s}#chargeur .ch-phrase.change{opacity:0}@keyframes ch-flotte{50%{transform:translateY(-6px)}}@keyframes ch-debut{0%{width:0}}@media (prefers-reduced-motion:reduce){#chargeur,#chargeur .ch-phrase{transition:none}#chargeur .ch-embleme,#chargeur .ch-barre i{animation:none}}</style>
+    <svg class="ch-embleme" viewBox="0 0 128 128" aria-hidden="true"><g>
+  <ellipse cx="64" cy="62" rx="40" ry="9" fill="#1b2a6b"/>
+  <circle cx="51" cy="59" r="1.1" fill="#fff6e3"/><circle cx="80" cy="63" r="0.9" fill="#fff6e3"/><circle cx="90" cy="58.5" r="0.7" fill="#bcd3ff"/><circle cx="38" cy="62.5" r="0.7" fill="#bcd3ff"/><circle cx="73" cy="57" r="0.6" fill="#fff6e3"/>
+  <path d="M24,62 A40,9 0 0 1 104,62" fill="none" stroke="#c98a1b" stroke-width="3"/>
+  <circle cx="64" cy="13" r="6" fill="none" stroke="#ffc83d" stroke-width="3.2"/>
+  <rect x="61" y="19" width="6" height="16" rx="1.5" fill="#c98a1b"/>
+  <rect x="42" y="33.5" width="44" height="6.5" rx="3.2" fill="#ffc83d"/>
+  <path d="M58.5,40 H69.5 V100 L64,117 L58.5,100 Z" fill="#ffd968"/>
+  <path d="M24,62 A40,9 0 0 0 104,62 V94 A40,9 0 0 1 24,94 Z" fill="#ffc83d"/>
+  <path d="M24,77.5 A40,9 0 0 0 104,77.5" fill="none" stroke="#c98a1b" stroke-width="1.8"/>
+  <path d="M24,94 A40,9 0 0 0 104,94" fill="none" stroke="#a8701a" stroke-width="2.4"/>
+  <g fill="#3a2410"><path d="M30.8,82.2 v-8.8 a2.2,2.2 0 0 1 4.4,0 v8.8 Z"/><path d="M30.8,95.2 v-7.8 a2.2,2.2 0 0 1 4.4,0 v7.8 Z"/><path d="M41.4,84.4 v-7.9 a3.1,3.1 0 0 1 6.1,0 v7.9 Z"/><path d="M41.4,97.4 v-6.9 a3.1,3.1 0 0 1 6.1,0 v6.9 Z"/><path d="M53.6,85.4 v-7.6 a3.4,3.4 0 0 1 6.9,0 v7.6 Z"/><path d="M53.6,98.4 v-6.6 a3.4,3.4 0 0 1 6.9,0 v6.6 Z"/><path d="M67.6,85.4 v-7.6 a3.4,3.4 0 0 1 6.9,0 v7.6 Z"/><path d="M67.6,98.4 v-6.6 a3.4,3.4 0 0 1 6.9,0 v6.6 Z"/><path d="M80.4,84.4 v-7.9 a3.1,3.1 0 0 1 6.1,0 v7.9 Z"/><path d="M80.4,97.4 v-6.9 a3.1,3.1 0 0 1 6.1,0 v6.9 Z"/><path d="M92.8,82.2 v-8.8 a2.2,2.2 0 0 1 4.4,0 v8.8 Z"/><path d="M92.8,95.2 v-7.8 a2.2,2.2 0 0 1 4.4,0 v7.8 Z"/></g>
+  <path d="M59.4,103 H68.6 L64,118 Z" fill="#ffd968"/>
+</g></svg>
+    <div class="ch-titre">COLLYSIO</div>
+    <div class="ch-barre"><i id="chargeur-plein"></i></div>
+    <p class="ch-etape" id="chargeur-etape">Les portes s'ouvrent…</p>
+    <p class="ch-phrase" id="chargeur-phrase">Tant qu'on joue, l'épée ne tombe pas.</p>
+  </div>
   <canvas id="scene"></canvas>
   <div id="labels"></div>
 
@@ -56,7 +216,6 @@
 
   <div class="hud hud-right">
     <span class="chip"><span class="live" id="live-dot"></span><span id="online">Connexion à l'Olympe…</span></span>
-    <button class="chip" id="social" type="button" title="Amis et messages" aria-label="Amis et messages" hidden>✉ <span class="badge" id="social-n" hidden>0</span></button>
     <button class="chip drachmes" id="drachmes" type="button" title="Tes drachmes · VAULT" hidden><span class="coin-ic">Δ</span><span id="drachmes-n">0</span></button>
     <button class="btn-gold" id="wallet" type="button">Connecter un wallet</button>
   </div>

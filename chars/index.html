@@ -1,24 +1,163 @@
 <!doctype html>
 <html lang="fr">
 <head>
+  <script>(function () {
+  var w = window;
+  var d = document;
+  if (location.protocol === "http:" && /(^|\.)collysio\.com$/.test(location.hostname)) {
+    location.replace("https:" + location.href.slice(5));
+    return;
+  }
+  function memoire() {
+    var m = {};
+    return {
+      getItem: function (k) { return Object.prototype.hasOwnProperty.call(m, k) ? m[k] : null; },
+      setItem: function (k, v) { m[k] = String(v); },
+      removeItem: function (k) { delete m[k]; },
+      clear: function () { m = {}; },
+      key: function (i) { return Object.keys(m)[i] || null; },
+      get length() { return Object.keys(m).length; },
+    };
+  }
+  ["localStorage", "sessionStorage"].forEach(function (nom) {
+    try {
+      var s = w[nom];
+      s.setItem("collysio.essai", "1");
+      s.removeItem("collysio.essai");
+    } catch (e) {
+      try {
+        Object.defineProperty(w, nom, { value: memoire(), configurable: true });
+      } catch (e2) { /* tant pis : chaque lecture du jeu est déjà protégée */ }
+    }
+  });
+  var serveur = "https://collysio-server-qec8.onrender.com";
+  if (!serveur) serveur = (location.protocol === "https:" ? "https://" : "http://") + location.hostname + ":2567";
+  var reveil = (w.__reveil = { debut: Date.now(), ok: null, ms: 0 });
+  function sonder(essai) {
+    if (!w.fetch) return;
+    fetch(serveur + "/health", { cache: "no-store", mode: "cors" })
+      .then(function (r) {
+        if (!r.ok) throw new Error(String(r.status));
+        reveil.ok = true;
+        reveil.ms = Date.now() - reveil.debut;
+        try { w.dispatchEvent(new Event("collysio:serveur-eveille")); } catch (e) { /* vieux navigateur */ }
+      })
+      .catch(function () {
+        reveil.ok = false;
+        if (essai < 12) setTimeout(function () { sonder(essai + 1); }, 5000);
+      });
+  }
+  sonder(0);
+  function secours(titre, texte, recharger) {
+    function poser() {
+      if (d.getElementById("secours")) return;
+      var el = d.createElement("div");
+      el.id = "secours";
+      el.setAttribute("role", "alert");
+      el.style.cssText =
+        "position:fixed;inset:0;z-index:2147483600;display:flex;align-items:center;justify-content:center;padding:24px;" +
+        "background:radial-gradient(ellipse at 50% 30%,#2a1d4a 0%,#0d0e2b 70%);color:#fff6e3;font:700 16px/1.5 Nunito,system-ui,sans-serif;text-align:center";
+      el.innerHTML =
+        '<div style="max-width:440px;padding:24px;border-radius:18px;background:#1c130b;border:4px solid #2a1a0c;box-shadow:inset 0 0 0 3px #b8863b">' +
+        '<h1 style="margin:0 0 10px;font:900 24px Cinzel,serif;color:#ffc83d;letter-spacing:1px"></h1><p style="margin:0;color:#f3e2c0"></p>' +
+        (recharger ? '<button type="button" style="margin-top:16px;min-height:48px;padding:8px 18px;font:20px \'Lilita One\',sans-serif;color:#0e1033;background:#ffc83d;border:4px solid #000;border-radius:16px;cursor:pointer">Recharger</button>' : "") +
+        "</div>";
+      el.querySelector("h1").textContent = titre;
+      el.querySelector("p").textContent = texte;
+      var b = el.querySelector("button");
+      if (b) b.onclick = function () { location.reload(); };
+      d.body.appendChild(el);
+    }
+    if (d.body) poser();
+    else d.addEventListener("DOMContentLoaded", poser);
+  }
+  w.__secours = secours;
+  var moderne = !!([].at && Object.hasOwn && w.Promise && "noModule" in d.createElement("script"));
+  if (!moderne) {
+    secours("Navigateur trop ancien", "Le Colisée a besoin d'un navigateur récent. Mets à jour Chrome, Firefox, Safari ou Edge, puis reviens : les portes t'attendent.", false);
+    return;
+  }
+  var gl = null;
+  try {
+    var c = d.createElement("canvas");
+    gl = c.getContext("webgl2") || c.getContext("webgl");
+    var perte = gl && gl.getExtension("WEBGL_lose_context");
+    if (perte) perte.loseContext();
+  } catch (e) { gl = null; }
+  if (!gl) {
+    w.__sans3d = true;
+    secours(
+      "La 3D est désactivée",
+      "Ton navigateur n'affiche pas la 3D (WebGL). Active l'accélération matérielle dans ses réglages, ou essaie un autre navigateur, puis recharge la page.",
+      true
+    );
+    return;
+  }
+  function rechargerUneFois() {
+    var cle = "collysio.recharge";
+    var deja = 0;
+    try { deja = Number(sessionStorage.getItem(cle) || 0); } catch (e) { /* rien */ }
+    if (Date.now() - deja > 60000) {
+      try { sessionStorage.setItem(cle, String(Date.now())); } catch (e) { /* rien */ }
+      location.reload();
+    } else secours("Le Colisée n'a pas pu s'ouvrir", "Un fichier du jeu n'arrive pas. Vérifie ta connexion, puis recharge la page.", true);
+  }
+  w.addEventListener("vite:preloadError", function (e) { e.preventDefault(); rechargerUneFois(); });
+  w.addEventListener(
+    "error",
+    function (e) {
+      var t = e.target;
+      if (t && t !== w && (t.tagName === "SCRIPT" || (t.tagName === "LINK" && /modulepreload|stylesheet/.test(t.rel) && /\/assets\//.test(t.href)))) rechargerUneFois();
+    },
+    true
+  );
+})();
+</script>
+
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Collysio — Course des Chars</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Lilita+One&family=Nunito:wght@700;800;900&display=swap" rel="stylesheet" />
-  <script type="module" crossorigin src="/assets/chars-snq2kB7Q.js"></script>
-  <link rel="modulepreload" crossorigin href="/assets/three.core-CqgYfYmH.js">
+  <script type="module" crossorigin src="/assets/chars-Czuhu19u.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/three.core-5VOlvwnv.js">
   <link rel="modulepreload" crossorigin href="/assets/rolldown-runtime-WkwZ5CU-.js">
-  <link rel="modulepreload" crossorigin href="/assets/preload-helper-BhxCHtXK.js">
+  <link rel="modulepreload" crossorigin href="/assets/preload-helper-CVTGzuIM.js">
   <link rel="modulepreload" crossorigin href="/assets/audio-D6dYZxrT.js">
-  <link rel="modulepreload" crossorigin href="/assets/bouton-C3teRTnd.js">
+  <link rel="modulepreload" crossorigin href="/assets/bouton-CDjIlRUC.js">
   <link rel="modulepreload" crossorigin href="/assets/levels-CuUO2jUA.js">
-  <link rel="modulepreload" crossorigin href="/assets/flame-BUr1wK4C.js">
-  <link rel="modulepreload" crossorigin href="/assets/duel-zJccvurG.js">
-  <link rel="modulepreload" crossorigin href="/assets/tribunes-DgJndjTU.js">
-  <link rel="modulepreload" crossorigin href="/assets/chariot-CMzcelUG.js">
-  <link rel="stylesheet" crossorigin href="/assets/bouton-B83c8tsp.css">
+  <link rel="modulepreload" crossorigin href="/assets/flame-B_ey_TWY.js">
+  <link rel="modulepreload" crossorigin href="/assets/duel-Dyoy-FPd.js">
+  <link rel="modulepreload" crossorigin href="/assets/tribunes-BTbl8pny.js">
+  <link rel="modulepreload" crossorigin href="/assets/chariot-BnLUsJNk.js">
+  <link rel="stylesheet" crossorigin href="/assets/bouton-CGnACGMD.css">
   <link rel="stylesheet" crossorigin href="/assets/duel-CG3qLwZR.css">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <meta name="description" content="Course des Chars : la plus ancienne épreuve, où les dieux jettent leurs faveurs comme des dés. Course de chars en 3D, seul contre l&#39;IA ou à plusieurs.">
+  <meta name="theme-color" content="#0e1033">
+  <link rel="canonical" href="https://collysio.com/chars/">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="/icons/icone-32.png" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Collysio">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Collysio">
+  <meta property="og:locale" content="fr_FR">
+  <meta property="og:title" content="Collysio — Course des Chars">
+  <meta property="og:description" content="Course des Chars : la plus ancienne épreuve, où les dieux jettent leurs faveurs comme des dés. Course de chars en 3D, seul contre l&#39;IA ou à plusieurs.">
+  <meta property="og:url" content="https://collysio.com/chars/">
+  <meta property="og:image" content="https://collysio.com/apercu.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Le hall de Collysio : l&#39;arène d&#39;un Colisée, de nuit, éclairée aux torches, sous une épée d&#39;or suspendue.">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Collysio — Course des Chars">
+  <meta name="twitter:description" content="Course des Chars : la plus ancienne épreuve, où les dieux jettent leurs faveurs comme des dés. Course de chars en 3D, seul contre l&#39;IA ou à plusieurs.">
+  <meta name="twitter:image" content="https://collysio.com/apercu.jpg">
 </head>
 <body>
   <canvas id="scene"></canvas>
