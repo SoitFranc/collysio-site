@@ -1,0 +1,1 @@
+export{t as mountChat}from"./chat-CcIuF6-V.js";
