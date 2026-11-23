@@ -1,0 +1,1 @@
+import{C as e,S as t}from"./tribunes-7e9YCA_d.js";function n(n){let r=t(n);!r||e(r)||new URLSearchParams(location.search).has(`dev`)||location.replace(`/`)}export{n as t};
