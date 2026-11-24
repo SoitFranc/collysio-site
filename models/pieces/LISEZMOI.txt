@@ -1,0 +1,13 @@
+Pièces rigides du personnage modulaire (étape 2) : un GLB par pièce, fixé sur un os
+du squelette KayKit par client/src/world/models.ts (sockets et réglages dans
+client/src/world/pieces.ts). Fabriquées par tools/modeles/pieces.mjs (voir
+tools/modeles/PIECES.md).
+
+essai-casque-squelette.glb : casque du guerrier (Skeleton_Warrior_Helmet) du
+« KayKit — Character Pack : Skeletons 1.0 » de Kay Lousberg (www.kaylousberg.com),
+sous licence CC0 1.0 (domaine public).
+https://github.com/KayKit-Game-Assets/KayKit-Character-Pack-Skeletons-1.0
+Repris tel quel dans le repère de l'os `head` (même squelette que nos personnages),
+texture réduite à 512 px (JPEG), compression meshopt :
+  node pieces.mjs Skeleton_Warrior.glb essai-casque-squelette.glb --noeud Skeleton_Warrior_Helmet --tel-quel
+Pièce d'essai de l'atelier (/dev/personnages.html?planche=pieces), absente du catalogue.
